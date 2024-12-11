@@ -4,6 +4,9 @@ import * as React from "react"
 import { ChevronDown, Users, X } from 'lucide-react'
 import Link from "next/link"
 import { useDebouncedCallback } from 'use-debounce'
+import { useSelector, useDispatch } from 'react-redux'
+import { useGetRequestsQuery, useCreateRequestMutation } from '@/store/features/requests/requestsApi'
+import { setSelectedDepartment, setSearchQuery, selectRequests } from '@/store/features/requests/requestsSlice'
 
 import { Button } from "@/components/ui/button"
 import {
@@ -66,8 +69,10 @@ const mostLikelyRequests = [
 ] as const
 
 export default function RequestWidget() {
-  const [selectedDept, setSelectedDept] = React.useState<keyof DepartmentType>("Все сервисы")
-  const [searchQuery, setSearchQuery] = React.useState("")
+  const dispatch = useDispatch()
+  const { selectedDepartment, searchQuery } = useSelector(selectRequests)
+  const { data: requests, isLoading } = useGetRequestsQuery()
+  const [createRequest] = useCreateRequestMutation()
   const [debouncedSearchResults, setDebouncedSearchResults] = React.useState<string[]>([])
 
   // Получаем все доступные заявки из всех департаментов
@@ -92,7 +97,7 @@ export default function RequestWidget() {
   // Обработчик изменения поискового запроса
   const handleSearchChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const query = e.target.value
-    setSearchQuery(query)
+    dispatch(setSearchQuery(query))
     debouncedSearch(query)
   }
 
@@ -102,10 +107,10 @@ export default function RequestWidget() {
       return debouncedSearchResults
     }
     
-    return selectedDept === "Все сервисы" 
+    return selectedDepartment === "Все сервисы" 
       ? mostLikelyRequests 
-      : departments[selectedDept]
-  }, [searchQuery, selectedDept, debouncedSearchResults])
+      : departments[selectedDepartment as keyof DepartmentType]
+  }, [searchQuery, selectedDepartment, debouncedSearchResults])
 
   return (
     <div className="w-full max-w-4xl mx-auto p-4 sm:p-6">
@@ -126,10 +131,10 @@ export default function RequestWidget() {
             <Button 
               variant="outline" 
               className={`w-[200px] justify-between ${
-                selectedDept !== "Все сервисы" ? "bg-blue-600 text-white hover:bg-blue-700" : ""
+                selectedDepartment !== "Все сервисы" ? "bg-blue-600 text-white hover:bg-blue-700" : ""
               }`}
             >
-              {selectedDept}
+              {selectedDepartment}
               <ChevronDown className="ml-2 h-4 w-4" />
             </Button>
           </DropdownMenuTrigger>
@@ -137,8 +142,8 @@ export default function RequestWidget() {
             {Object.keys(departments).map((dept) => (
               <DropdownMenuItem 
                 key={dept}
-                onClick={() => setSelectedDept(dept as keyof DepartmentType)}
-                className={selectedDept === dept ? "bg-blue-50" : ""}
+                onClick={() => dispatch(setSelectedDepartment(dept as keyof DepartmentType))}
+                className={selectedDepartment === dept ? "bg-blue-50" : ""}
               >
                 {dept}
               </DropdownMenuItem>
@@ -156,7 +161,7 @@ export default function RequestWidget() {
           {searchQuery && (
             <button
               onClick={() => {
-                setSearchQuery("")
+                dispatch(setSearchQuery(""))
                 setDebouncedSearchResults([])
               }}
               className="absolute right-3 top-1/2 -translate-y-1/2"

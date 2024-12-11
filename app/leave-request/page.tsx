@@ -2,6 +2,7 @@
 
 import { CalendarIcon, ChevronDown, ChevronRight, Cloud, Upload } from 'lucide-react'
 import Link from "next/link"
+import { useCreateRequestMutation } from '@/store/features/requests/requestsApi'
 
 import { Button } from "@/components/ui/button"
 import { Calendar } from "@/components/ui/calendar"
@@ -21,6 +22,20 @@ import { Textarea } from "@/components/ui/textarea"
 import { cn } from "@/lib/utils"
 
 export default function LeaveRequestPage() {
+  const [createRequest, { isLoading }] = useCreateRequestMutation()
+
+  const handleSubmit = async (data: FormData) => {
+    try {
+      await createRequest({
+        type: 'leave',
+        // другие данные
+      }).unwrap()
+      // обработка успеха
+    } catch (error) {
+      // обработка ошибки
+    }
+  }
+
   return (
     <div className="max-w-4xl mx-auto p-6">
       {/* Breadcrumb */}
