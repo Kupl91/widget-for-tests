@@ -138,6 +138,8 @@ export default function RequestWidget() {
                 ? "/leave-request"
                 : title === "Доступ к системам"
                 ? "/system-access"
+                : title === "Справка 2-НДФЛ"
+                ? "/ndfl-request"
                 : "#"
             }
           >
