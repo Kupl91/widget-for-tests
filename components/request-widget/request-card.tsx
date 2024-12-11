@@ -12,7 +12,7 @@ interface RequestCardProps {
 export const RequestCard = memo(function RequestCard({ title, href }: RequestCardProps) {
   return (
     <Link href={href}>
-      <Card className="p-3 hover:bg-blue-50 cursor-pointer transition-colors">
+      <Card className="p-3 aspect-[3/1] flex items-center hover:bg-blue-50 cursor-pointer transition-colors">
         <CardDescription className="text-blue-600 text-sm">
           {title}
         </CardDescription>
