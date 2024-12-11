@@ -12,8 +12,8 @@ interface SearchBarProps {
 
 export function SearchBar({ value, onSearch, onClear }: SearchBarProps) {
   const handleChange = useCallback((e: React.ChangeEvent<HTMLInputElement>) => {
-    onSearch(e.target.value)
-  }, [onSearch])
+    onSearch(e.target.value);
+  }, [onSearch]);
 
   return (
     <div className="flex-1 relative">

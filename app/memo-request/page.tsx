@@ -116,7 +116,7 @@ ${fullName}
           <Input
             value={fullName}
             onChange={(e) => setFullName(e.target.value)}
-            placeholder="Укажите ваше ФИО"
+            placeholder="Укажите ва��е ФИО"
           />
         </div>
 
@@ -187,9 +187,11 @@ ${fullName}
 
         {/* Form Actions */}
         <div className="flex justify-end space-x-4 pt-4">
-          <Button variant="outline" type="button">
-            Отмена
-          </Button>
+          <Link href="/">
+            <Button variant="outline" type="button">
+              Отмена
+            </Button>
+          </Link>
           <Button type="submit">
             Создать
           </Button>

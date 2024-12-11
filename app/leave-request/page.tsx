@@ -1,6 +1,6 @@
 "use client"
 
-import { CalendarIcon, ChevronDown, ChevronRight, Cloud, Upload } from 'lucide-react'
+import { CalendarIcon, ChevronRight, Cloud, } from 'lucide-react'
 import Link from "next/link"
 import { useCreateRequestMutation } from '@/store/features/requests/requestsApi'
 
@@ -49,7 +49,11 @@ export default function LeaveRequestPage() {
         Создать заявку: Отпуск по уходу за ребенком до 1,5 лет
       </h1>
 
-      <form className="space-y-6">
+      <form className="space-y-6" onSubmit={(e) => {
+        e.preventDefault()
+        const formData = new FormData(e.currentTarget)
+        handleSubmit(formData)
+      }}>
         {/* Manager Select */}
         <div className="space-y-2">
           <label className="block">
@@ -183,11 +187,13 @@ export default function LeaveRequestPage() {
 
         {/* Form Actions */}
         <div className="flex justify-end space-x-4 pt-4">
-          <Button variant="outline" type="button">
-            Отмена
-          </Button>
-          <Button type="submit">
-            Создать
+          <Link href="/">
+            <Button variant="outline" type="button">
+              Отмена
+            </Button>
+          </Link>
+          <Button type="submit" disabled={isLoading}>
+            {isLoading ? "Создание..." : "Создать"}
           </Button>
         </div>
       </form>

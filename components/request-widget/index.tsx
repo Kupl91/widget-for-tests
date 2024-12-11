@@ -29,7 +29,6 @@ export function RequestWidget() {
   }, [dispatch])
 
   const handleSearch = useDebouncedCallback((query: string) => {
-    dispatch(setSearchQuery(query))
     if (query.length >= 3) {
       const results = getAllRequests.filter(request =>
         request.toLowerCase().includes(query.toLowerCase())
@@ -38,6 +37,7 @@ export function RequestWidget() {
     } else {
       setDebouncedSearchResults([])
     }
+    dispatch(setSearchQuery(query))
   }, 300)
 
   const handleClearSearch = useCallback(() => {

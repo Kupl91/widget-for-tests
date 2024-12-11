@@ -34,11 +34,11 @@ const periodOptions: PeriodOption[] = [
   { value: "q2", label: "2 квартал", quarters: [2] },
   { value: "q3", label: "3 квартал", quarters: [3] },
   { value: "q4", label: "4 квартал", quarters: [4] },
-  { value: "q1-2", label: "1-2 квартал", quarters: [1, 2] },
-  { value: "q2-3", label: "2-3 квартал", quarters: [2, 3] },
-  { value: "q3-4", label: "3-4 квартал", quarters: [3, 4] },
-  { value: "q1-3", label: "1-3 квартал", quarters: [1, 2, 3] },
-  { value: "q2-4", label: "2-4 квартал", quarters: [2, 3, 4] },
+  { value: "q1-2", label: "1-2 кварталы", quarters: [1, 2] },
+  { value: "q2-3", label: "2-3 кварталы", quarters: [2, 3] },
+  { value: "q3-4", label: "3-4 кварталы", quarters: [3, 4] },
+  { value: "q1-3", label: "1-3 кварталы", quarters: [1, 2, 3] },
+  { value: "q2-4", label: "2-4 кварталы", quarters: [2, 3, 4] },
   { value: "full", label: "Год", quarters: [1, 2, 3, 4] },
 ]
 
@@ -210,9 +210,11 @@ export default function NdflRequestPage() {
 
         {/* Form Actions */}
         <div className="flex justify-end space-x-4 pt-4">
-          <Button variant="outline" type="button">
-            Отмена
-          </Button>
+          <Link href="/">
+            <Button variant="outline" type="button">
+              Отмена
+            </Button>
+          </Link>
           <Button type="submit">
             Создать
           </Button>

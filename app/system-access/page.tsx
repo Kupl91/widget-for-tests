@@ -1,6 +1,6 @@
 "use client"
 
-import { ChevronRight, Users } from 'lucide-react'
+import { ChevronRight } from 'lucide-react'
 import Link from "next/link"
 
 import { Button } from "@/components/ui/button"
@@ -127,9 +127,11 @@ export default function SystemAccessPage() {
 
         {/* Form Actions */}
         <div className="flex justify-end space-x-4 pt-4">
-          <Button variant="outline" type="button">
-            Отмена
-          </Button>
+          <Link href="/">
+            <Button variant="outline" type="button">
+              Отмена
+            </Button>
+          </Link>
           <Button type="submit">
             Создать
           </Button>
