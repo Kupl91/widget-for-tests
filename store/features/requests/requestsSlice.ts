@@ -1,9 +1,9 @@
 import { RootState } from '@/store/store'
 import { createSlice, PayloadAction } from '@reduxjs/toolkit'
-
+import { DepartmentType } from '@/components/request-widget/types'
 
 interface RequestsState {
-  selectedDepartment: string
+  selectedDepartment: keyof DepartmentType
   searchQuery: string
   // другие поля
 }
@@ -17,7 +17,7 @@ export const requestsSlice = createSlice({
   name: 'requests',
   initialState,
   reducers: {
-    setSelectedDepartment: (state, action: PayloadAction<string>) => {
+    setSelectedDepartment: (state, action: PayloadAction<keyof DepartmentType>) => {
       state.selectedDepartment = action.payload
     },
     setSearchQuery: (state, action: PayloadAction<string>) => {

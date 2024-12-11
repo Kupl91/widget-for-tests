@@ -15,7 +15,7 @@ import { departments, mostLikelyRequests, DepartmentType } from './types'
 export function RequestWidget() {
   const dispatch = useDispatch()
   const { selectedDepartment, searchQuery } = useSelector(selectRequests)
-  const { data: requests, isLoading } = useGetRequestsQuery()
+  const { isLoading } = useGetRequestsQuery()
   const [debouncedSearchResults, setDebouncedSearchResults] = useState<string[]>([])
 
   const getAllRequests = useMemo(() => {
@@ -52,7 +52,7 @@ export function RequestWidget() {
     
     return selectedDepartment === "Все сервисы" 
       ? mostLikelyRequests 
-      : departments[selectedDepartment]
+      : departments[selectedDepartment as keyof DepartmentType]
   }, [searchQuery, selectedDepartment, debouncedSearchResults])
 
   if (isLoading) {
