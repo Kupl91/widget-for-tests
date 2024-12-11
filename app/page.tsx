@@ -1,6 +1,6 @@
 import { AcademyHeader } from "@/components/academy-header"
 import { EventsSidebar } from "@/components/events/events-sidebar"
-import RequestWidget from "@/components/request-widget"
+import { RequestWidget } from "@/components/request-widget/index"
 import { MOCK_UPCOMING_EVENTS, MOCK_BIRTHDAYS, MOCK_NEW_EMPLOYEES } from "@/lib/constants/mock-data"
 
 export default function Home() {
