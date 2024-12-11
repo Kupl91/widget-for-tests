@@ -3,6 +3,7 @@
 import * as React from "react"
 import { ChevronDown, Users, X } from 'lucide-react'
 import Link from "next/link"
+import { useDebouncedCallback } from 'use-debounce'
 
 import { Button } from "@/components/ui/button"
 import {
@@ -67,10 +68,44 @@ const mostLikelyRequests = [
 export default function RequestWidget() {
   const [selectedDept, setSelectedDept] = React.useState<keyof DepartmentType>("Все сервисы")
   const [searchQuery, setSearchQuery] = React.useState("")
+  const [debouncedSearchResults, setDebouncedSearchResults] = React.useState<string[]>([])
 
-  const displayedRequests = selectedDept === "Все сервисы" 
-    ? mostLikelyRequests 
-    : departments[selectedDept]
+  // Получаем все доступные заявки из всех департаментов
+  const getAllRequests = React.useMemo(() => {
+    return Object.entries(departments)
+      .filter(([dept]) => dept !== "Все сервисы")
+      .flatMap(([, requests]) => requests)
+  }, [])
+
+  // Функция поиска с debounce
+  const debouncedSearch = useDebouncedCallback((query: string) => {
+    if (query.length >= 3) {
+      const results = getAllRequests.filter(request =>
+        request.toLowerCase().includes(query.toLowerCase())
+      )
+      setDebouncedSearchResults(results)
+    } else {
+      setDebouncedSearchResults([])
+    }
+  }, 300)
+
+  // Обработчик изменения поискового запроса
+  const handleSearchChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const query = e.target.value
+    setSearchQuery(query)
+    debouncedSearch(query)
+  }
+
+  // Определяем, какие заявки показывать
+  const displayedRequests = React.useMemo(() => {
+    if (searchQuery.length >= 3) {
+      return debouncedSearchResults
+    }
+    
+    return selectedDept === "Все сервисы" 
+      ? mostLikelyRequests 
+      : departments[selectedDept]
+  }, [searchQuery, selectedDept, debouncedSearchResults])
 
   return (
     <div className="w-full max-w-4xl mx-auto p-4 sm:p-6">
@@ -115,12 +150,15 @@ export default function RequestWidget() {
           <Input 
             placeholder="Что нужно сделать?" 
             value={searchQuery}
-            onChange={(e) => setSearchQuery(e.target.value)}
+            onChange={handleSearchChange}
             className="pr-10"
           />
           {searchQuery && (
             <button
-              onClick={() => setSearchQuery("")}
+              onClick={() => {
+                setSearchQuery("")
+                setDebouncedSearchResults([])
+              }}
               className="absolute right-3 top-1/2 -translate-y-1/2"
             >
               <X className="h-4 w-4 text-gray-500" />
