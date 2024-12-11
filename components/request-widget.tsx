@@ -7,6 +7,8 @@ import { useDebouncedCallback } from 'use-debounce'
 import { useSelector, useDispatch } from 'react-redux'
 import { useGetRequestsQuery, useCreateRequestMutation } from '@/store/features/requests/requestsApi'
 import { setSelectedDepartment, setSearchQuery, selectRequests } from '@/store/features/requests/requestsSlice'
+import { useMemo, useCallback, memo } from 'react'
+import { ROUTES } from '@/constants/routes'
 
 import { Button } from "@/components/ui/button"
 import {
@@ -47,7 +49,7 @@ const departments: DepartmentType = {
   ],
   "Согл. док-та": [
     "Согласование договора",
-    "Согласование приказа",
+    "Сог��асование приказа",
     "Согласование служебной записки",
   ],
   "Финансы": [
@@ -67,6 +69,16 @@ const mostLikelyRequests = [
   "Отпуск без сохранения з/п",
   "Согласование приказа",
 ] as const
+
+const MemoizedCard = memo(({ title, href }: { title: string; href: string }) => (
+  <Link href={href}>
+    <Card className="p-3 hover:bg-blue-50 cursor-pointer transition-colors">
+      <CardDescription className="text-blue-600 text-sm">
+        {title}
+      </CardDescription>
+    </Card>
+  </Link>
+))
 
 export default function RequestWidget() {
   const dispatch = useDispatch()
@@ -94,15 +106,16 @@ export default function RequestWidget() {
     }
   }, 300)
 
-  // Обработчик изменения поискового запроса
-  const handleSearchChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const query = e.target.value
-    dispatch(setSearchQuery(query))
-    debouncedSearch(query)
-  }
+  const handleDepartmentChange = useCallback((dept: string) => {
+    dispatch(setSelectedDepartment(dept))
+  }, [dispatch])
+
+  const handleSearchChange = useCallback((e: React.ChangeEvent<HTMLInputElement>) => {
+    dispatch(setSearchQuery(e.target.value))
+  }, [dispatch])
 
   // Определяем, какие заявки показывать
-  const displayedRequests = React.useMemo(() => {
+  const displayedRequests = useMemo(() => {
     if (searchQuery.length >= 3) {
       return debouncedSearchResults
     }
@@ -111,6 +124,10 @@ export default function RequestWidget() {
       ? mostLikelyRequests 
       : departments[selectedDepartment as keyof DepartmentType]
   }, [searchQuery, selectedDepartment, debouncedSearchResults])
+
+  if (isLoading) {
+    return <div>Loading...</div>
+  }
 
   return (
     <div className="w-full max-w-4xl mx-auto p-4 sm:p-6">
@@ -142,7 +159,7 @@ export default function RequestWidget() {
             {Object.keys(departments).map((dept) => (
               <DropdownMenuItem 
                 key={dept}
-                onClick={() => dispatch(setSelectedDepartment(dept as keyof DepartmentType))}
+                onClick={() => handleDepartmentChange(dept as keyof DepartmentType)}
                 className={selectedDepartment === dept ? "bg-blue-50" : ""}
               >
                 {dept}
@@ -174,28 +191,21 @@ export default function RequestWidget() {
 
       <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-2">
         {displayedRequests?.map((title: string, index: number) => (
-          <Link 
+          <MemoizedCard 
             key={index}
+            title={title}
             href={
               title === "Отпуск по уходу за ребенком до 1,5 лет" 
-                ? "/leave-request"
+                ? ROUTES.REQUESTS.LEAVE
                 : title === "Доступ к системам"
-                ? "/system-access"
+                ? ROUTES.REQUESTS.SYSTEM_ACCESS
                 : title === "Справка 2-НДФЛ"
-                ? "/ndfl-request"
+                ? ROUTES.REQUESTS.NDFL
                 : title === "Согласование служебной записки"
-                ? "/memo-request"
-                : "#"
+                ? ROUTES.REQUESTS.MEMO
+                : ROUTES.HOME
             }
-          >
-            <Card 
-              className="p-3 hover:bg-blue-50 cursor-pointer transition-colors"
-            >
-              <CardDescription className="text-blue-600 text-sm">
-                {title}
-              </CardDescription>
-            </Card>
-          </Link>
+          />
         ))}
       </div>
     </div>
