@@ -1,3 +1,5 @@
+import { Button } from "@/components/ui/button"
+
 export function AcademyHeader() {
   return (
     <div className="space-y-4">
@@ -7,9 +9,9 @@ export function AcademyHeader() {
         образовательная платформа
       </h1>
       <div className="flex gap-4">
-        <button className="px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700">
+        <Button variant="default">
           Перейти
-        </button>
+        </Button>
       </div>
     </div>
   )
