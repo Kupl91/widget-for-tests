@@ -30,7 +30,7 @@ export function DepartmentSelect({ departments, selectedDepartment, onSelect }: 
           <ChevronDown className="ml-2 h-4 w-4" />
         </Button>
       </DropdownMenuTrigger>
-      <DropdownMenuContent className="w-[200px]">
+      <DropdownMenuContent className="w-[200px] bg-white">
         {Object.keys(departments).map((dept) => (
           <DropdownMenuItem 
             key={dept}
