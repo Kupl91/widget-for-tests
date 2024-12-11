@@ -1,4 +1,4 @@
-import { useForm } from "react-hook-form"
+import { useForm, DefaultValues } from "react-hook-form"
 import { zodResolver } from "@hookform/resolvers/zod"
 import { z } from "zod"
 import { Button } from "@/components/ui/button"
@@ -14,7 +14,7 @@ export type BaseRequestFormData = z.infer<typeof baseRequestSchema>
 interface RequestFormProps<T extends BaseRequestFormData> {
   onSubmit: (data: T) => Promise<void>
   schema: z.ZodType<T>
-  defaultValues?: Partial<T>
+  defaultValues?: DefaultValues<T>
   children: React.ReactNode
 }
 

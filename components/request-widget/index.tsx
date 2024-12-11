@@ -52,7 +52,7 @@ export function RequestWidget() {
     
     return selectedDepartment === "Все сервисы" 
       ? mostLikelyRequests 
-      : departments[selectedDepartment as keyof DepartmentType]
+      : departments[selectedDepartment]
   }, [searchQuery, selectedDepartment, debouncedSearchResults])
 
   if (isLoading) {
