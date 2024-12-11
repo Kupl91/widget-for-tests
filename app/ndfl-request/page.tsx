@@ -12,7 +12,6 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select"
-import { Input } from "@/components/ui/input"
 import {
   Popover,
   PopoverContent,
@@ -85,7 +84,7 @@ export default function NdflRequestPage() {
         </h1>
         <div className="text-right text-sm text-gray-600 space-y-1">
           <p>Генеральному директору</p>
-          <p>ООО "Бюро 1440"</p>
+          <p>ООО &ldquo;Бюро 1440&rdquo;</p>
           <p>Шелобкову А. А.</p>
           <p>от {`<Должность>`}</p>
           <p>{`<ФИО>`}</p>

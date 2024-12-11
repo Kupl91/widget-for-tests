@@ -140,6 +140,8 @@ export default function RequestWidget() {
                 ? "/system-access"
                 : title === "Справка 2-НДФЛ"
                 ? "/ndfl-request"
+                : title === "Согласование служебной записки"
+                ? "/memo-request"
                 : "#"
             }
           >
