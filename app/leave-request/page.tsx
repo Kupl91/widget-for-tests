@@ -3,7 +3,6 @@
 import { CalendarIcon, ChevronRight, Cloud, } from 'lucide-react'
 import Link from "next/link"
 import { useCreateRequestMutation } from '@/store/features/requests/requestsApi'
-
 import { Button } from "@/components/ui/button"
 import { Calendar } from "@/components/ui/calendar"
 import {
@@ -32,6 +31,7 @@ export default function LeaveRequestPage() {
       }).unwrap()
       // обработка успеха
     } catch (error) {
+      console.error(error)
       // обработка ошибки
     }
   }

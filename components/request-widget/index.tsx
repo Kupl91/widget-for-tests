@@ -38,7 +38,7 @@ export function RequestWidget() {
       setDebouncedSearchResults([])
     }
     dispatch(setSearchQuery(query))
-  }, 300)
+  }, 0)
 
   const handleClearSearch = useCallback(() => {
     dispatch(setSearchQuery(""))
